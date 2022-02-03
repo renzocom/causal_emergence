@@ -4,55 +4,6 @@ import matplotlib as mpl
 import models
 import compute
 
-def print_measures_output(micro_out, macro_out):
-
-        print('Parameters\n==========')
-        print(f"Micro transition: ({micro_out['c']}) --> ({micro_out['e']})")
-        print(f"Macro transition: ({macro_out['c']}) --> ({macro_out['e']})")
-        print()
-        print('Micro')
-        print(f"Input distribution: '{micro_out['which_input_dist']}'")
-        print('Macro')
-        print(f"Input distribution: '{macro_out['which_input_dist']}'")
-
-        print()
-
-        print()
-        print('Probabilities\n=============')
-        prob_input_string = [f"{x:.2f}" for x in micro_out['prob_input']]
-        print(f"{f'P(s)':<20} = {prob_input_string} => {macro_out['prob_input']}")
-        print(f"{f'States(s)':<20} = {micro_out['cause_purview']} => {macro_out['cause_purview']}")
-        print()
-        prob_not_cause_purview_string = [f"{x:.2f}" for x in micro_out['prob_not_cause_purview']]
-        print(f"{'P(not-c)':<20} = {prob_not_cause_purview_string} => {macro_out['prob_not_cause_purview']}")
-        print(f"{f'Not-c States(s)':<20} = {micro_out['not_cause_purview']} => {macro_out['not_cause_purview']}")
-
-        print()
-        print(f"{f'P(e | c)':<20} = {micro_out['prob_e_c']:.4f} => {macro_out['prob_e_c']:.2f}")
-
-        print(f"{f'P(e | {{c}})':<20} = {micro_out['prob_e']:.4f} => {macro_out['prob_e']:.2f}")
-        print(f"{f'P(e | {{not-c}})':<20} = {micro_out['prob_e_not_c']:.4f} => {macro_out['prob_e_not_c']:.2f}")
-
-        print()
-        print(f"{'CS_Eells (PNS)':<20} = {micro_out['eells']:.3f} => {macro_out['eells']:.2f}")
-        print(f"{'CS_Lewis (PN)':<20} = {micro_out['lewis_II']:.3f} => {macro_out['lewis_II']:.2f}")
-        print(f"{'CS_Cheng (PS)':<20} = {micro_out['cheng']:.3f} => {macro_out['cheng']:.2f}")
-        print(f"{'CS_Suppes':<20} = {micro_out['suppes']:.3f} => {macro_out['suppes']:.2f}")
-        print(f"{'CS_Effect_Info':<20} = {micro_out['effect_ratio']:.3f} => {macro_out['effect_ratio']:.2f}")
-        print()
-        print(f"{'Lewis_CPW state':<20} = {micro_out['not_c_lewis']} => {macro_out['not_c_lewis']}")
-        print(f"{'P(e | not-c CPW)':<20} = {micro_out['prob_e_not_c_lewis']:.3f} => {macro_out['prob_e_not_c_lewis']:.2f}")
-        print(f"{'CS_Lewis_CPW':<20} = {micro_out['lewis_II_cpw']:.3f} => {macro_out['lewis_II_cpw']:.2f}")
-        print()
-        print(f"{'CS_Bit-flip':<20} = {micro_out['bit_flip_cause']:.3f} => {macro_out['bit_flip_cause']:.2f}")
-
-x = ['states', 'transition', 'c', 'e', 'which_input_dist', 'cause_purview', 'prob_e_c', 'prob_e',\
-'prob_e_not_c', 'prob_e_not_c_lewis', 'prob_not_e_not_c', 'prob_input', \
-'prob_not_cause_purview', 'galton', 'eells', 'suppes', 'cheng', 'lewis_II', 'lewis_ratio',\
-'lewis_II_cpw', 'lewis_ratio_cpw', 'effect_ratio', 'suppes_ratio', 'point_det', 'point_deg',\
-'point_det_coef', 'point_deg_coef', 'point_eff', 'sufficiency', 'necessity', 'bit_flip_transition',\
-'bit_flip_cause', 'bit_flip_cause_emd', 'perturb_power']
-
 def run_analysis(n_states,
                 single_or_average_transition,
                 which_input_dist,
@@ -335,3 +286,46 @@ def plot_analysis_by_result(all_results,
     plt.tight_layout()
     plt.subplots_adjust(top=0.9)
     return fig, axs
+
+    def print_measures_output(micro_out, macro_out):
+
+        print('Parameters\n==========')
+        print(f"Micro transition: ({micro_out['c']}) --> ({micro_out['e']})")
+        print(f"Macro transition: ({macro_out['c']}) --> ({macro_out['e']})")
+        print()
+        print('Micro')
+        print(f"Input distribution: '{micro_out['which_input_dist']}'")
+        print('Macro')
+        print(f"Input distribution: '{macro_out['which_input_dist']}'")
+
+        print()
+
+        print()
+        print('Probabilities\n=============')
+        prob_input_string = [f"{x:.2f}" for x in micro_out['prob_input']]
+        print(f"{f'P(s)':<20} = {prob_input_string} => {macro_out['prob_input']}")
+        print(f"{f'States(s)':<20} = {micro_out['cause_purview']} => {macro_out['cause_purview']}")
+        print()
+        prob_not_cause_purview_string = [f"{x:.2f}" for x in micro_out['prob_not_cause_purview']]
+        print(f"{'P(not-c)':<20} = {prob_not_cause_purview_string} => {macro_out['prob_not_cause_purview']}")
+        print(f"{f'Not-c States(s)':<20} = {micro_out['not_cause_purview']} => {macro_out['not_cause_purview']}")
+
+        print()
+        print(f"{f'P(e | c)':<20} = {micro_out['prob_e_c']:.4f} => {macro_out['prob_e_c']:.2f}")
+
+        print(f"{f'P(e | {{c}})':<20} = {micro_out['prob_e']:.4f} => {macro_out['prob_e']:.2f}")
+        print(f"{f'P(e | {{not-c}})':<20} = {micro_out['prob_e_not_c']:.4f} => {macro_out['prob_e_not_c']:.2f}")
+
+        print()
+        print(f"{'CS_Eells (PNS)':<20} = {micro_out['eells']:.3f} => {macro_out['eells']:.2f}")
+        print(f"{'CS_Lewis (PN)':<20} = {micro_out['lewis_II']:.3f} => {macro_out['lewis_II']:.2f}")
+        print(f"{'CS_Cheng (PS)':<20} = {micro_out['cheng']:.3f} => {macro_out['cheng']:.2f}")
+        print(f"{'CS_Suppes':<20} = {micro_out['suppes']:.3f} => {macro_out['suppes']:.2f}")
+        print(f"{'CS_Effect_Info':<20} = {micro_out['effect_ratio']:.3f} => {macro_out['effect_ratio']:.2f}")
+        print()
+        print(f"{'Lewis_CPW state':<20} = {micro_out['not_c_lewis']} => {macro_out['not_c_lewis']}")
+        print(
+            f"{'P(e | not-c CPW)':<20} = {micro_out['prob_e_not_c_lewis']:.3f} => {macro_out['prob_e_not_c_lewis']:.2f}")
+        print(f"{'CS_Lewis_CPW':<20} = {micro_out['lewis_II_cpw']:.3f} => {macro_out['lewis_II_cpw']:.2f}")
+        print()
+        print(f"{'CS_Bit-flip':<20} = {micro_out['bit_flip_cause']:.3f} => {macro_out['bit_flip_cause']:.2f}")

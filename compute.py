@@ -360,7 +360,7 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
     if not_cause_purview != []:
         not_cause_purview_ixs = sorted([states.index(state) for state in not_cause_purview])
 
-        prob_not_cause_purview = prob_input[not_cause_purview_ixs] / np.sum(prob_input[not_cause_purview_ixs])
+        prob_not_cause_purview = prob_input[not_cause_purview_ixs] / np.sum(prob_input[not_cause_purview_ixs]) # normalizes to become a probability again
         prob_e_not_c = np.inner(prob_not_cause_purview, tpm[not_cause_purview_ixs, effect_ix])
         prob_not_e_not_c = 1 - prob_e_not_c
     else:
@@ -369,7 +369,7 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
         prob_e_not_c = 0
         prob_not_e_not_c = 1
 
-    ## P(e | not_c) using Lewis closest posssible world (CPW) based on Hamming distance
+    # P(e | not_c) using Lewis closest posssible world (CPW) based on Hamming distance
     if not_cause_purview == []:
         not_c_lewis = []
         prob_e_not_c_lewis = 0
@@ -391,8 +391,6 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
         # not_c_lewis_ix = not_c_lewis_ixs[ix]
         # not_c_lewis = states[not_c_lewis_ix]
         # prob_e_not_c_lewis = np.max(prob_e_not_c_lewis)
-
-
 
     # Perturbational measures
     perturb_power = calc_perturb_power(tpm, transition, states)
