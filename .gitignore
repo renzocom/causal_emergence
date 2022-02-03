@@ -1,0 +1,16 @@
+# Ignore everything
+/*
+
+# Also ignore
+**/.DS_Store
+**.log
+
+
+# Except for
+!.gitignore
+!README.md
+!analysis.py
+!compute.py
+!2021_12 Causal Emergence Paper.ipynb
+!causal_emergence_results_24_01_2022.pkl
+
