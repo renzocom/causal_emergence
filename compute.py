@@ -240,6 +240,9 @@ def calc_lewis(prob_e_c, prob_e_not_c):
 def calc_cheng(prob_e_c, prob_e_not_c):
     return (prob_e_c - prob_e_not_c) / (1 - prob_e_not_c)
 
+def calc_good(prob_e_c, prob_e_not_c):
+    return np.log((1 - prob_e_not_c) / (1 - prob_e_c))
+
 def calc_effect_ratio(prob_e_c, prob_e):
     return np.log2(prob_e_c / prob_e)
 
@@ -356,11 +359,13 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
     prob_e = np.inner(prob_input, tpm[:, effect_ix])
 
     # P(e | {not-c}) considers all other cause states but c, uses the input distribution on not-c states and renormalizes
-    not_cause_purview = list(set(cause_purview) - set([cause]))
+    not_cause_purview = list(set(cause_purview) - set([cause])) # TODO: properly reorder in the same order as 'states'
+
     if not_cause_purview != []:
         not_cause_purview_ixs = sorted([states.index(state) for state in not_cause_purview])
 
         prob_not_cause_purview = prob_input[not_cause_purview_ixs] / np.sum(prob_input[not_cause_purview_ixs]) # normalizes to become a probability again
+
         prob_e_not_c = np.inner(prob_not_cause_purview, tpm[not_cause_purview_ixs, effect_ix])
         prob_not_e_not_c = 1 - prob_e_not_c
     else:
@@ -404,6 +409,7 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
     suppes = calc_suppes(prob_e_c, prob_e)
     cheng = calc_cheng(prob_e_c, prob_e_not_c)
     lewis_II = calc_lewis(prob_e_c, prob_e_not_c)
+    good = calc_good(prob_e_c, prob_e_not_c)
 
     lewis_ratio = prob_e_c / prob_e_not_c
     lewis_II_cpw = (prob_e_c - prob_e_not_c_lewis) / prob_e_c # rescaled lewis with closes possible world
@@ -438,6 +444,7 @@ def calc_measures(tpm, states, transition, which_input_dist='maxent'):
             'eells' : eells,
             'suppes' : suppes,
             'cheng' : cheng,
+            'good' : good,
             'lewis_II' : lewis_II,
             'lewis_ratio' : lewis_ratio,
             'lewis_II_cpw' : lewis_II_cpw,
@@ -465,7 +472,7 @@ def get_measure_labels(groups=['primitives', 'prob', 'lewis', 'info', 'perturb']
     '''
     primitives = ['sufficiency', 'necessity', 'point_det_coef', 'point_deg_coef']
     prob_terms = ['prob_e']
-    prob = ['galton', 'eells', 'suppes', 'lewis_II', 'cheng']
+    prob = ['galton', 'eells', 'suppes', 'lewis_II', 'cheng', 'good']
     lewis = ['lewis_ratio', 'lewis_II_cpw', 'lewis_ratio_cpw']
     info = ['effect_ratio', 'point_det', 'point_deg']
     perturb = ['bit_flip_transition', 'bit_flip_cause', 'bit_flip_cause_emd', 'perturb_power']
